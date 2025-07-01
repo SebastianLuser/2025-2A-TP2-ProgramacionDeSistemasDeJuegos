@@ -3582,6 +3582,7 @@ MonoBehaviour:
   closeButton: {fileID: 413694288}
   consoleWrapper: {fileID: 11400000, guid: a0a1bbd9ecf6fb24dbf2867a15283b67, type: 2}
   toggleConsoleAction: {fileID: -2521449016455232929, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  consolePanel: {fileID: 1329245647}
 --- !u!1 &2119871739
 GameObject:
   m_ObjectHideFlags: 0
