@@ -9,6 +9,12 @@ namespace DebugConsole.Commands
         private readonly IDebugConsole<string> _console;
 
         public AliasesCommand(IDebugConsole<string> console) => _console = console;
+        
+        public string Name => "alias";
+
+        public IEnumerable<string> Aliases => new[] { "aliases", "ALIAS", "ALIASES" };
+
+        public string Description => "Logs the aliases for the given command";
 
         public void Execute(Action<string> log, params string[] args)
         {
@@ -28,11 +34,5 @@ namespace DebugConsole.Commands
             }
 
         }
-
-        public string Name => "alias";
-
-        public IEnumerable<string> Aliases => new[] { "aliases", "ALIAS", "ALIASES" };
-
-        public string Description => "Logs the aliases for the given command";
     }
 }
