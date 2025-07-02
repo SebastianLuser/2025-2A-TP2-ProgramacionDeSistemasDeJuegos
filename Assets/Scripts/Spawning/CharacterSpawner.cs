@@ -8,6 +8,7 @@ public class CharacterSpawner : MonoBehaviour, ICharacterSpawner
 
     public void Awake()
     {
+        _characterFactory = new CharacterFactory();
         ServiceLocator.Register<ICharacterSpawner>(this); 
     }
     

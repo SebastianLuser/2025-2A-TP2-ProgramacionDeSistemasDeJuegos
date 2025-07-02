@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13f5454cd55af4a488e75a1387ac71a1, type: 3}
-  m_Name: MaskDudeSetup
+  m_Name: PinkManSetup
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 0}
-  _characterSprite: {fileID: 0}
-  _characterSetups: []
-  _animatorController: {fileID: 0}
+  _prefab: {fileID: 6779143174161877438, guid: b5bfe69065726de4fb7277dbb1fcec73, type: 3}
+  _characterSetups:
+  - {fileID: 11400000, guid: bc6afdeef9906e54281a4006d5fb4468, type: 2}
+  - {fileID: 11400000, guid: 55385738c8a02354aa724e63a0709f10, type: 2}
+  _animatorController: {fileID: 22100000, guid: c2c09215dfc727a409dc1c3cfbba9c86, type: 2}

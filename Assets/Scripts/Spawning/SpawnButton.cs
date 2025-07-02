@@ -1,11 +1,11 @@
-using System;
+
 using TMPro;
 using Services;
 using Spawning;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpawnButton : MonoBehaviour, ISetup<ButtonSetupAsset>
+public class SpawnButton : MonoBehaviour, ISetup<ButtonSetupAsset.MenuButtons>
 {
     [SerializeField] private Button button;
     private TextMeshProUGUI title;
@@ -15,29 +15,34 @@ public class SpawnButton : MonoBehaviour, ISetup<ButtonSetupAsset>
     private void Reset()
         => button = GetComponent<Button>();
 
-    public void Setup(ButtonSetupAsset model)
+    public void Setup(ButtonSetupAsset.MenuButtons menuButton)
     {
         title = GetComponentInChildren<TextMeshProUGUI>();
-        title.text = model.text;
-        _character = model.characterSetup;
+        if (title != null)
+            title.text = menuButton.title;
         
-        button.onClick.AddListener(HandleClick);
+        _character = menuButton.characterSetup;
+        
+        if (button != null)
+            button.onClick.AddListener(HandleClick);
     }
 
     private void Awake()
     {
         if (!button)
             button = GetComponent<Button>();
-        
-        _spawner = ServiceLocator.Get<ICharacterSpawner>();
     }
 
+    private void Start()
+    {
+        _spawner = ServiceLocator.Get<ICharacterSpawner>();
+    }
+    
     private void OnEnable()
     {
         if (!button)
         {
             enabled = false;
-            return;
         }
     }
 

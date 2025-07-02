@@ -9,7 +9,7 @@ namespace DebugConsole
     [CreateAssetMenu(menuName = "Debug Console/Debug Console", fileName = "DebugConsole", order = 1000)]
     public class ConsoleWrapper : ScriptableObject, IDebugConsole<string>, ILogHandler
     {
-        [SerializeField] protected List<CommandSO> commands;
+        [SerializeField] protected List<Command> commands;
         [SerializeField] protected char[] separators;
         [SerializeField] protected AnimationCommandLibrary animationLibrary;
         

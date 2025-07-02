@@ -3,14 +3,11 @@
 public class CharacterMenuController : MonoBehaviour
 {
     [SerializeField] private Transform buttonLayout;
-    [SerializeField] private ButtonSetupAsset[] buttonConfigs;
+    [SerializeField] private ButtonSetupAsset buttonSetupAsset;
     [SerializeField] private GameObject buttonPrefab;
-    
-    private IButtonAbstractFactory buttonFactory;
 
     private void Start()
     {
-        buttonFactory = new ButtonFactory();
         BuildMenu();
     }
 
@@ -19,8 +16,14 @@ public class CharacterMenuController : MonoBehaviour
         foreach (Transform child in buttonLayout)
             Destroy(child.gameObject);
 
-        foreach (var buttonConfig in buttonConfigs)
+        if (buttonSetupAsset == null || buttonSetupAsset.buttons == null)
+            return;
+
+        foreach (var buttonConfig in buttonSetupAsset.buttons)
         {
+            if (buttonConfig == null || buttonConfig.characterSetup == null)
+                continue;
+
             var buttonInstance = Instantiate(buttonPrefab, buttonLayout);
             
             var spawnButton = buttonInstance.GetComponent<SpawnButton>();
