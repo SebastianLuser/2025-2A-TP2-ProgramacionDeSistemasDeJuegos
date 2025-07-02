@@ -2166,16 +2166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e3cbb09dc2f39c46ba6b5b05b35b3c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3659010567693264050, guid: b5bfe69065726de4fb7277dbb1fcec73, type: 3}
-  characterModel:
-    <Acceleration>k__BackingField: 5
-    <Speed>k__BackingField: 2
-    <JumpForce>k__BackingField: 5
-  controllerModel:
-    <MoveInput>k__BackingField: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    <JumpInput>k__BackingField: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    <AirborneSpeedMultiplier>k__BackingField: 0.5
-  animatorController: {fileID: 22100000, guid: 3d2541903ae170d4b94706e606c867a9, type: 2}
+  characterSetup: {fileID: 11400000, guid: edf95eb77009bb74d9e6b68f2c0622a8, type: 2}
 --- !u!1 &1280107668
 GameObject:
   m_ObjectHideFlags: 0

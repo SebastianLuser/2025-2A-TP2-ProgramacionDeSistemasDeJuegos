@@ -1,26 +1,30 @@
+using Services;
+using Spawning;
 using UnityEngine;
 
-public class CharacterSpawner : MonoBehaviour
+public class CharacterSpawner : MonoBehaviour, ICharacterSpawner
 {
-    [SerializeField] private Character prefab;
-    [SerializeField] private CharacterModel characterModel;
-    [SerializeField] private PlayerControllerModel controllerModel;
-    [SerializeField] private RuntimeAnimatorController animatorController;
+    private ICharacterAbstractFactory _characterFactory;
 
-    public void Spawn()
+    public void Awake()
     {
-        var result = Instantiate(prefab, transform.position, transform.rotation);
-        if (!result.TryGetComponent(out Character character))
-            character = result.gameObject.AddComponent<Character>();
-        character.Setup(characterModel);
+        ServiceLocator.Register<ICharacterSpawner>(this); 
+    }
+    
+    private void OnDestroy()
+    {
+        ServiceLocator.Unregister<ICharacterSpawner>();
+    }
+    
 
-        if (!result.TryGetComponent(out PlayerController controller))
-            controller = result.gameObject.AddComponent<PlayerController>();
-        controller.Setup(controllerModel);
-
-        var animator = result.GetComponentInChildren<Animator>();
-        if (!animator)
-            animator = result.gameObject.AddComponent<Animator>();
-        animator.runtimeAnimatorController = animatorController;
+    public void Spawn(ICharacterSetup config)
+    {
+        if (_characterFactory == null)
+        {
+            return;
+        }
+        
+        ((ISetup<ICharacterSetup>)_characterFactory).Setup(config);
+        _characterFactory.CreateCharacter(transform.position, transform.rotation);
     }
 }
