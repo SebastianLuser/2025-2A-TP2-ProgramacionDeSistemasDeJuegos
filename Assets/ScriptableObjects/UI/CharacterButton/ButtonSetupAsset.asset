@@ -15,7 +15,7 @@ MonoBehaviour:
   buttons:
   - title: Mask Dude
     characterSetup: {fileID: 11400000, guid: 4df32c34e4889344e9f6300aa266d076, type: 2}
-  - title: Ninka Frog
+  - title: Ninja Frog
     characterSetup: {fileID: 11400000, guid: 1003cde7163dcd547b3588bba0d88ac1, type: 2}
   - title: Pink Man
     characterSetup: {fileID: 11400000, guid: 5b4b1040c8b4eab4bba95b0f60ea81c2, type: 2}

@@ -16,11 +16,6 @@ public static class CharacterAnimatorRegistry
         _animators.Remove(animator);
     }
 
-    public static IEnumerable<CharacterAnimator> GetAll()
-    {
-        return _animators.Where(a => a != null);
-    }
-
     public static IEnumerable<CharacterAnimator> GetActive()
     {
         return _animators.Where(a => a != null && a.gameObject.activeInHierarchy);

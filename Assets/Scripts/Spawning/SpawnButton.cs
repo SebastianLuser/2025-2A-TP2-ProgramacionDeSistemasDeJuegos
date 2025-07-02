@@ -1,4 +1,3 @@
-
 using TMPro;
 using Services;
 using Spawning;
@@ -9,7 +8,7 @@ public class SpawnButton : MonoBehaviour, ISetup<ButtonSetupAsset.MenuButtons>
 {
     [SerializeField] private Button button;
     private TextMeshProUGUI title;
-    private ICharacterSetup _character;
+    private ICharacterSetup _characterSetup;
     private ICharacterSpawner _spawner;
 
     private void Reset()
@@ -21,10 +20,13 @@ public class SpawnButton : MonoBehaviour, ISetup<ButtonSetupAsset.MenuButtons>
         if (title != null)
             title.text = menuButton.title;
         
-        _character = menuButton.characterSetup;
+        _characterSetup = menuButton.characterSetup;
         
         if (button != null)
+        {
+            button.onClick.RemoveAllListeners();
             button.onClick.AddListener(HandleClick);
+        }
     }
 
     private void Awake()
@@ -53,10 +55,8 @@ public class SpawnButton : MonoBehaviour, ISetup<ButtonSetupAsset.MenuButtons>
 
     private void HandleClick()
     {
-        if (_character == null)
-        {
-            return;
-        }
-        _spawner.Spawn(_character);
+        if (_characterSetup == null || _spawner == null) return;
+        
+        _spawner.Spawn(_characterSetup);
     }
 }
