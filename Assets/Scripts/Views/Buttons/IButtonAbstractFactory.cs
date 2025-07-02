@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-public interface IButtonAbstractFactory
+﻿public interface IButtonAbstractFactory
 {
-    Button CreateButton(Transform parent);
+    IButtonFactory GetFactory(object config);
 }

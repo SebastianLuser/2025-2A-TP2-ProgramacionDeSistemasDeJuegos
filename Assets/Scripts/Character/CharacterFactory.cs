@@ -1,49 +1,77 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
-public class CharacterFactory : ICharacterAbstractFactory, ISetup<ICharacterSetup>
+using UnityEngine;
+public class CharacterFactory : ICharacterFactory
 {
-    public ICharacterSetup Model { get; set; }
+    private ICharacterSetup _currentSetup;
 
-    public void Setup(ICharacterSetup model)
+    public void Setup(ICharacterSetup setup)
     {
-        Model = model;
+        _currentSetup = setup;
     }
 
     public Character CreateCharacter(Vector3 position, Quaternion rotation)
     {
-        var result = Object.Instantiate(Model.prefab, position, rotation);
+        if (_currentSetup?.prefab == null) return null;
 
-        foreach (var setup in Model.characterSetups)
+        var instance = Object.Instantiate(_currentSetup.prefab, position, rotation);
+
+        ApplyCharacterSetups(instance, _currentSetup.characterSetups);
+        ConfigureAnimator(instance, _currentSetup.animatorController);
+
+        return instance.GetComponent<Character>();
+    }
+
+    private void ApplyCharacterSetups(GameObject instance, List<ScriptableObject> setups)
+    {
+        if (setups == null) return;
+
+        foreach (var setupData in setups)
         {
-            if (setup == null) continue;
+            if (setupData == null) continue;
 
-            if (setup is ISetup<Character> characterSetup)
-            {
-                if (result.TryGetComponent(out Character character))
-                    characterSetup.Setup(character);
-                else
-                {
-                    character = result.AddComponent<Character>();
-                    characterSetup.Setup(character);
-                }
-            }
-            else if (setup is ISetup<PlayerController> controllerSetup)
-            {
-                if (result.TryGetComponent(out PlayerController controller))
-                    controllerSetup.Setup(controller);
-                else
-                {
-                    controller = result.AddComponent<PlayerController>();
-                    controllerSetup.Setup(controller);
-                }
-            }
+            ApplySpecificSetup(instance, setupData);
         }
+    }
 
-        var animator = result.GetComponentInChildren<Animator>();
-        if (!animator)
-            animator = result.AddComponent<Animator>();
-        animator.runtimeAnimatorController = Model.animatorController;
+    private void ApplySpecificSetup(GameObject instance, ScriptableObject setupData)
+    {
+        switch (setupData)
+        {
+            case CharacterModelSetup characterSetup:
+                SetupCharacterComponent(instance, characterSetup);
+                break;
+            case PlayerControllerModelSetup controllerSetup:
+                SetupPlayerControllerComponent(instance, controllerSetup);
+                break;
+        }
+    }
 
-        return result.GetComponent<Character>();
+    private void SetupCharacterComponent(GameObject instance, CharacterModelSetup setup)
+    {
+        var character = instance.GetComponent<Character>();
+        if (character == null)
+            character = instance.AddComponent<Character>();
+
+        setup.Setup(character);
+    }
+
+    private void SetupPlayerControllerComponent(GameObject instance, PlayerControllerModelSetup setup)
+    {
+        var controller = instance.GetComponent<PlayerController>();
+        if (controller == null)
+            controller = instance.AddComponent<PlayerController>();
+
+        setup.Setup(controller);
+    }
+    private void ConfigureAnimator(GameObject instance, RuntimeAnimatorController controller)
+    {
+        if (controller == null) return;
+
+        var animator = instance.GetComponentInChildren<Animator>();
+        if (animator == null)
+            animator = instance.AddComponent<Animator>();
+
+        animator.runtimeAnimatorController = controller;
     }
 }

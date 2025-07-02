@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Services;
+using UnityEngine;
 
 public class CharacterMenuController : MonoBehaviour
 {
@@ -13,24 +14,32 @@ public class CharacterMenuController : MonoBehaviour
 
     private void BuildMenu()
     {
-        foreach (Transform child in buttonLayout)
-            Destroy(child.gameObject);
+        ClearExistingButtons();
 
-        if (buttonSetupAsset == null || buttonSetupAsset.buttons == null)
-            return;
+        if (buttonSetupAsset?.buttons == null) return;
 
         foreach (var buttonConfig in buttonSetupAsset.buttons)
         {
-            if (buttonConfig == null || buttonConfig.characterSetup == null)
-                continue;
+            if (buttonConfig?.characterSetup == null) continue;
 
-            var buttonInstance = Instantiate(buttonPrefab, buttonLayout);
-            
-            var spawnButton = buttonInstance.GetComponent<SpawnButton>();
-            if (spawnButton != null)
-            {
-                spawnButton.Setup(buttonConfig);
-            }
+            CreateButton(buttonConfig);
         }
+    }
+
+    private void ClearExistingButtons()
+    {
+        foreach (Transform child in buttonLayout)
+            Destroy(child.gameObject);
+    }
+
+    private void CreateButton(ButtonSetupAsset.MenuButtons buttonConfig)
+    {
+        var buttonInstance = Instantiate(buttonPrefab, buttonLayout);
+        
+        var spawnButton = buttonInstance.GetComponent<SpawnButton>();
+        if (spawnButton == null)
+            spawnButton = buttonInstance.AddComponent<SpawnButton>();
+            
+        spawnButton.Setup(buttonConfig);
     }
 }
