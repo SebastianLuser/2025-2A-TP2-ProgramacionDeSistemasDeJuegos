@@ -45,7 +45,6 @@ public class ButtonFactory : IButtonFactory
         return _currentConfig switch
         {
             ButtonSetupAsset.MenuButtons menuButton => menuButton.title,
-            IButtonSetup buttonSetup => buttonSetup.buttonTitle,
             _ => "Button"
         };
     }

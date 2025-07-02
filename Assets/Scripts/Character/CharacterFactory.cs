@@ -10,16 +10,14 @@ public class CharacterFactory : ICharacterFactory
         _currentSetup = setup;
     }
 
-    public Character CreateCharacter(Vector3 position, Quaternion rotation)
+    public void CreateCharacter(Vector3 position, Quaternion rotation)
     {
-        if (_currentSetup?.prefab == null) return null;
+        if (_currentSetup?.prefab == null);
 
         var instance = Object.Instantiate(_currentSetup.prefab, position, rotation);
 
         ApplyCharacterSetups(instance, _currentSetup.characterSetups);
         ConfigureAnimator(instance, _currentSetup.animatorController);
-
-        return instance.GetComponent<Character>();
     }
 
     private void ApplyCharacterSetups(GameObject instance, List<ScriptableObject> setups)

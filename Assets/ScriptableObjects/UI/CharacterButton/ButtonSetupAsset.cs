@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ButtonSetupAsset", menuName = "Scriptable Objects/ButtonSetupAsset")]
 public class ButtonSetupAsset : ScriptableObject
 {
-    public List<MenuButtons> buttons = new List<MenuButtons>();
+    public List<MenuButtons> buttons = new();
 
     [Serializable]
     public class MenuButtons

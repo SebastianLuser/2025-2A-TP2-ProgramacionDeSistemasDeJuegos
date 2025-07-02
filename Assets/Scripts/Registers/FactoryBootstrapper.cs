@@ -19,16 +19,19 @@ public class FactoryBootstrapper : MonoBehaviour
     private void InitializeFactorySystem()
     {
         var registry = new FactoryRegistry();
-        
+    
         RegisterCharacterFactories(registry);
         RegisterButtonFactories(registry);
-        
-        var characterAbstractFactory = new CharacterAbstractFactory(registry, new CharacterFactory());
-        var buttonAbstractFactory = new ButtonAbstractFactory(registry, new ButtonFactory(defaultButtonPrefab));
+    
+        ICharacterAbstractFactory characterAbstractFactory = new CharacterAbstractFactory(registry, new CharacterFactory());
+        IButtonAbstractFactory buttonAbstractFactory = new ButtonAbstractFactory(registry, new ButtonFactory(defaultButtonPrefab));
+
+        var buttonFactory = buttonAbstractFactory.GetFactory(defaultButtonPrefab);
 
         ServiceLocator.Register<IFactoryRegistry>(registry);
-        ServiceLocator.Register<ICharacterAbstractFactory>(characterAbstractFactory);
-        ServiceLocator.Register<IButtonAbstractFactory>(buttonAbstractFactory);
+        ServiceLocator.Register(characterAbstractFactory);
+        ServiceLocator.Register(buttonAbstractFactory);
+        ServiceLocator.Register(buttonFactory);
     }
 
     private void RegisterCharacterFactories(IFactoryRegistry registry)

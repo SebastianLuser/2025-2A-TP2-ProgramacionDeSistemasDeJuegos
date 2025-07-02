@@ -7,8 +7,11 @@ public class CharacterMenuController : MonoBehaviour
     [SerializeField] private ButtonSetupAsset buttonSetupAsset;
     [SerializeField] private GameObject buttonPrefab;
 
+    private IButtonAbstractFactory _buttonAbstractFactory;
+
     private void Start()
     {
+        _buttonAbstractFactory = ServiceLocator.Get<IButtonAbstractFactory>();
         BuildMenu();
     }
 
@@ -34,12 +37,14 @@ public class CharacterMenuController : MonoBehaviour
 
     private void CreateButton(ButtonSetupAsset.MenuButtons buttonConfig)
     {
-        var buttonInstance = Instantiate(buttonPrefab, buttonLayout);
-        
-        var spawnButton = buttonInstance.GetComponent<SpawnButton>();
+        var factory = _buttonAbstractFactory.GetFactory(buttonConfig);
+        var button = factory.CreateButton(buttonLayout, null);
+    
+        var spawnButton = button.GetComponent<SpawnButton>();
         if (spawnButton == null)
-            spawnButton = buttonInstance.AddComponent<SpawnButton>();
-            
+            spawnButton = button.gameObject.AddComponent<SpawnButton>();
+        
         spawnButton.Setup(buttonConfig);
     }
+
 }
