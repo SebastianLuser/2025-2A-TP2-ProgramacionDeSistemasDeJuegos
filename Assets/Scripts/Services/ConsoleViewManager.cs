@@ -80,7 +80,6 @@ namespace Services
 
             if (consoleWrapper == null)
             {
-                Debug.LogError($"{name}: {nameof(consoleWrapper)} is null!");
                 return;
             }
 
@@ -92,7 +91,6 @@ namespace Services
         {
             if (!consoleBody)
             {
-                Debug.LogError($"{name}: {nameof(consoleBody)} is null!");
                 return;
             }
 
