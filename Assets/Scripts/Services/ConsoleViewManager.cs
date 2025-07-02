@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Services
 {
-    public class ConsoleViewManager : MonoBehaviour, IConsoleViewManager
+    public class ConsoleViewManager : MonoBehaviour
     {
         private const int CHARACTER_LIMIT = 13000;
 
@@ -23,7 +23,7 @@ namespace Services
 
         private void Awake()
         {
-            ServiceLocator.Register<IConsoleViewManager>(this);
+            ServiceLocator.Register(this);
         }
 
         private void Start()
@@ -68,7 +68,7 @@ namespace Services
                 toggleConsoleAction.action.Disable();
             }
             
-            ServiceLocator.Unregister<IConsoleViewManager>();
+            ServiceLocator.Unregister<ConsoleViewManager>();
         }
 
         private void HandleSubmitClick() => SubmitInput(inputField.text);

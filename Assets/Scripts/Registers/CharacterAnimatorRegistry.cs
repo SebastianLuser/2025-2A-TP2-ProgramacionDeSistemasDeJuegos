@@ -20,6 +20,4 @@ public static class CharacterAnimatorRegistry
     {
         return _animators.Where(a => a != null && a.gameObject.activeInHierarchy);
     }
-
-    public static int Count => _animators.Count;
 }

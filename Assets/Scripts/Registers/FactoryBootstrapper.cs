@@ -46,4 +46,8 @@ public class FactoryBootstrapper : MonoBehaviour
         var buttonFactory = new ButtonFactory(defaultButtonPrefab);
         registry.RegisterButtonFactory(buttonFactory);
     }
+    
+    
+    
+    
 }
