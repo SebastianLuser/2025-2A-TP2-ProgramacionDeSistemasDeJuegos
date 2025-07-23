@@ -4,7 +4,6 @@ using DebugConsole.Commands;
 using Services;
 using UnityEngine;
 
-[DefaultExecutionOrder(-1000)]
 public class CommandProvider : MonoBehaviour
 {
     [SerializeField] private AnimationCommandLibrary animationLibrary;

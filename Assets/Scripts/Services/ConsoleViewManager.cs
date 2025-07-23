@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace Services
 {
-    [DefaultExecutionOrder(100)]
     public class ConsoleViewManager : MonoBehaviour
     {
         private const int CHARACTER_LIMIT = 13000;
