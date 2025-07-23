@@ -137,18 +137,5 @@ namespace Services
                 consolePanel.SetActive(false);
             }
         }
-        
-        public void OpenConsole()
-        {
-            if (consolePanel != null)
-            {
-                consolePanel.SetActive(true);
-                
-                if (inputField != null)
-                {
-                    inputField.ActivateInputField();
-                }
-            }
-        }
     }
 }

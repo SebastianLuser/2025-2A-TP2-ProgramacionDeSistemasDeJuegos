@@ -10,29 +10,43 @@ namespace DebugConsole.Commands
 
         public AliasesCommand(IDebugConsole<string> console) => _console = console;
         
-        public string Name => "alias";
+        public string Name => "aliases";
 
-        public IEnumerable<string> Aliases => new[] { "aliases", "ALIAS", "ALIASES" };
+        public IEnumerable<string> Aliases => new[] { "alias", "ALIAS", "ALIASES" };
 
-        public string Description => "Logs the aliases for the given command";
+        public string Description => "aliases <command>: Shows a command alias.";
 
         public void Execute(Action<string> log, params string[] args)
         {
-            var cmdNameOrAlias = args[0];
-
-            if (_console.IsValidCommand(cmdNameOrAlias))
+            if (args.Length == 0)
             {
-                var command = _console.Commands.FirstOrDefault(
-                    c =>
-                        c.Name == cmdNameOrAlias || c.Aliases.Contains(cmdNameOrAlias)
-                );
-
-                if (command != null)
-                {
-                    log($"{command.Name} => [{command.Aliases.Aggregate("", (current, alias) => $"{current}, {alias}")}]");
-                }
+                log?.Invoke("Usage: aliases <command>");
+                return;
             }
 
+            var commandName = args[0];
+            var command = FindCommand(commandName);
+
+            if (command != null)
+            {
+                ShowCommandAliases(command, log);
+            }
+            else
+            {
+                log?.Invoke($"Command '{commandName}' not found.");
+            }
+        }
+
+        private ICommand<string> FindCommand(string commandName)
+        {
+            return _console.Commands.FirstOrDefault(c => 
+                c.Name == commandName || c.Aliases.Contains(commandName));
+        }
+
+        private void ShowCommandAliases(ICommand<string> command, Action<string> log)
+        {
+            var aliasesText = string.Join(", ", command.Aliases);
+            log?.Invoke($"{command.Name} => [{aliasesText}]");
         }
     }
 }
