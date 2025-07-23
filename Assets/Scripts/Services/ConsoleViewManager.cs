@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace Services
 {
+    [DefaultExecutionOrder(100)]
     public class ConsoleViewManager : MonoBehaviour
     {
         private const int CHARACTER_LIMIT = 13000;
@@ -30,6 +31,18 @@ namespace Services
         {
             if (consolePanel != null)
                 consolePanel.SetActive(false);
+            
+            if (consoleWrapper)
+            {
+
+                var commandProvider = ServiceLocator.Get<CommandProvider>();
+                var externalCommands = commandProvider.CreateCommands(consoleWrapper);
+                foreach (var command in externalCommands)
+                {
+                    consoleWrapper.AddCommand(command);
+                }
+
+            }
         }
 
         private void OnEnable()

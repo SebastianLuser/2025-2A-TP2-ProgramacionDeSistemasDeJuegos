@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DebugConsole.Commands;
+using Services;
 using UnityEngine;
 
 namespace DebugConsole
@@ -11,7 +12,6 @@ namespace DebugConsole
     {
         [SerializeField] protected List<Command> commands;
         [SerializeField] protected char[] separators;
-        [SerializeField] protected AnimationCommandLibrary animationLibrary;
         
         protected IDebugConsole<string> DebugConsole;
         private ILogHandler _originalLogHandler;
@@ -21,16 +21,7 @@ namespace DebugConsole
         protected void OnEnable()
         {
             DebugConsole = new DebugConsole<string>((str) => log(str), commands.Cast<ICommand<string>>().ToArray());
-            
-            var aliasesCommand = new AliasesCommand(DebugConsole);
-            DebugConsole.AddCommand(aliasesCommand);
     
-            var helpCommand = new HelpCommand(DebugConsole);
-            DebugConsole.AddCommand(helpCommand);
-            
-            var playAnimationCommand = new PlayAnimationCommand(DebugConsole, animationLibrary);
-            DebugConsole.AddCommand(playAnimationCommand);
-            
             _originalLogHandler = Debug.unityLogger.logHandler;
             Debug.unityLogger.logHandler = this;
         }
