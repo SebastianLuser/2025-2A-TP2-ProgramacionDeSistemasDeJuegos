@@ -14,10 +14,13 @@ public class CharacterFactory : ICharacterFactory
     {
         if (_currentSetup?.prefab == null);
 
-        var instance = Object.Instantiate(_currentSetup.prefab, position, rotation);
+        if (_currentSetup != null)
+        {
+            var instance = Object.Instantiate(_currentSetup.prefab, position, rotation);
 
-        ApplyCharacterSetups(instance, _currentSetup.characterSetups);
-        ConfigureAnimator(instance, _currentSetup.animatorController);
+            ApplyCharacterSetups(instance, _currentSetup.characterSetups);
+            ConfigureAnimator(instance, _currentSetup.animatorController);
+        }
     }
 
     private void ApplyCharacterSetups(GameObject instance, List<ScriptableObject> setups)

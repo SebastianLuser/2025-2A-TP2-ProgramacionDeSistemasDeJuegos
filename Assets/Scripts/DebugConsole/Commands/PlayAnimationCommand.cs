@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace DebugConsole.Commands
 {
@@ -17,42 +18,68 @@ namespace DebugConsole.Commands
         
         public string Name => "playanimation";
 
-        public IEnumerable<string> Aliases => new[] { "anim", "playanim", "pa" };
+        public IEnumerable<string> Aliases => new[] { "anim", "playanim", "play" };
 
-        public string Description => "Play an animation in all the characters";
+        public string Description => BuildDescription();
+
+        private string BuildDescription()
+        {
+            var sb = new StringBuilder();
+            sb.Append("playanimation <animation>: Play an animation in all the characters.");
+            
+            if (HasAnimations())
+            {
+                var animations = GetUniqueAnimations();
+                sb.AppendLine(" Available Animations:");
+                sb.Append(string.Join("\n", animations.Select(name => $"- {name}")));
+            }
+            
+            return sb.ToString();
+        }
+
+        private bool HasAnimations()
+        {
+            return _animationLibrary?.animations != null && _animationLibrary.animations.Length > 0;
+        }
+
+        private IEnumerable<string> GetUniqueAnimations()
+        {
+            return _animationLibrary.animations
+                .Select(a => a.commandName)
+                .Distinct()
+                .OrderBy(name => name);
+        }
 
         public void Execute(Action<string> log, params string[] args)
         {
             if (args.Length == 0)
             {
-                if (_animationLibrary?.animations != null)
-                {
-                    foreach (var a in _animationLibrary.animations)
-                        log($"- {a.commandName}");
-                }
+                ShowAvailableAnimations(log);
                 return;
             }
             
-            var cmdName = args[0];
+            ExecuteAnimation(args[0]);
+        }
+
+        private void ShowAvailableAnimations(Action<string> log)
+        {
+            if (!HasAnimations()) return;
+
+            foreach (var animationName in GetUniqueAnimations())
+                log($"- {animationName}");
+        }
+
+        private void ExecuteAnimation(string animationName)
+        {
+            if (!HasAnimations()) return;
             
-            if (_animationLibrary?.animations == null)
-            {
-                return;
-            }
-            
-            var animCommand = _animationLibrary.animations.FirstOrDefault(c => c.commandName == cmdName);
-            if (animCommand == null)
-            {
-                return;
-            }
+            var animCommand = _animationLibrary.animations.FirstOrDefault(c => c.commandName == animationName);
+            if (animCommand == null) return;
             
             var animators = CharacterAnimatorRegistry.GetActive();
-            
-            int count = 0;
             foreach (var charAnim in animators)
             {
                 charAnim.ForceAnimation(animCommand, 2f);
-                count++;
             }
         }
     }
