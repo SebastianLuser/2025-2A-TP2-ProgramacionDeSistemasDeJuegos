@@ -30,6 +30,18 @@ namespace Services
         {
             if (consolePanel != null)
                 consolePanel.SetActive(false);
+            
+            if (consoleWrapper)
+            {
+
+                var commandProvider = ServiceLocator.Get<CommandProvider>();
+                var externalCommands = commandProvider.CreateCommands(consoleWrapper);
+                foreach (var command in externalCommands)
+                {
+                    consoleWrapper.AddCommand(command);
+                }
+
+            }
         }
 
         private void OnEnable()
